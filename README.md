@@ -15,7 +15,7 @@ Requires git for testing.
 ## Getting and Running
 
 ```shell
-git clone https://github.com/jagger-harris/online-geopolitical-simulator.git
+git clone https://github.com/jagger-harris/5d-tic-tac-toe-with-multiverse-time-travel.git
 ```
 
 In order to run this, you must either put it on a server environment or use Live Server.
