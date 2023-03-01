@@ -9,6 +9,7 @@ class Board {
     this.winningPlayer = "";
     this.level = level;
     this.buttons = [];
+    this.hasNextBoard = false;
 
     for (let i = 0; i < 9; i++) {
       let x1 = Math.floor(i / 3);
@@ -45,40 +46,64 @@ class Board {
     
     for (let i = 0; i < this.buttons.length; i++) {
       this.buttons[i].draw(offset, zoom, () => {
-        if (this.buttons[i].label == "" && !game.won && this.turn == game.turn && this.level <= game.present) {
-          this.buttons[i].label = this.turn;
-          this.turnAmount += 1;
-          this.won = this.checkWin();
+        /* Only play on empty spaces */
+        if (this.buttons[i].label != "") {
+          return;
+        }
 
-          if (this.won) {
-            if (this.turnAmount > 8) {
-              this.winningPlayer = "DRAW";
-            } else {
-              this.winningPlayer = this.turn;
-            }
+        /* Only play if no one has won */
+        if (game.won) {
+          return;
+        }
+
+        /* Only play on board with matching turn */
+        if (this.turn != game.turn) {
+          return;
+        }
+
+        /* Only play on boards present and past, not future */
+        if (this.level > game.present) {
+          return;
+        }
+
+        /* Only play on board with no future */
+        if (this.hasNextBoard && this.level == game.present) {
+          return;
+        }
+        
+        this.buttons[i].label = this.turn;
+        this.turnAmount += 1;
+        this.won = this.checkWin();
+
+        if (this.won) {
+          if (this.turnAmount > 8) {
+            this.winningPlayer = "DRAW";
           } else {
-            let x = this.x + (this.size * 3) + 200;
-            let y = this.y;
-            let size = this.size;
-            let turn = this.turn == "X" ? "O" : "X";
-            let turnAmount = this.turnAmount;
-            let level = this.level + 1;
+            this.winningPlayer = this.turn;
+          }
+        } else {
+          let x = this.x + (this.size * 3) + 200;
+          let y = this.y;
+          let size = this.size;
+          let turn = this.turn == "X" ? "O" : "X";
+          let turnAmount = this.turnAmount;
+          let level = this.level + 1;
 
-            /* Time travel logic */
-            if (level != this.turnAmount) {
-              game.timelines += 1;
-              y = -((this.size * 3) + 200) * (game.timelines - 1);
-              turnAmount -= 1;
-            }
+          /* Time travel logic */
+          if (level != this.turnAmount) {
+            game.timelines += 1;
+            y = -((this.size * 3) + 200) * (game.timelines - 1);
+            turnAmount -= 1;
+          }
 
-            game.turn = turn;
-            game.present = level;
-            game.boards.push(new Board(x, y, size, turn, turnAmount, level, this.buttons));
+          this.hasNextBoard = true;
+          game.turn = turn;
+          game.present = level;
+          game.boards.push(new Board(x, y, size, turn, turnAmount, level, this.buttons));
 
-            if (level != this.turnAmount) {
-              this.buttons[i].label = "";
-              this.turnAmount -= 1;
-            }
+          if (level != this.turnAmount) {
+            this.buttons[i].label = "";
+            this.turnAmount -= 1;
           }
         }
       })
