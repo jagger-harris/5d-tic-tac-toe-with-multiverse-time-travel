@@ -69,7 +69,7 @@ function draw() {
   let color = game.turn == "X" ? [255, 100, 100] : [100, 100, 255];
   noStroke();
   fill(color[0], color[1], color[2]);
-  rect((width * 0.5 - game.size * 1.5 + 100) * (game.present + 1) + (game.present * 44), -999999, 400, 99999999);
+  rect(game.boards[game.boards.length - 1].x + 100, -999999, 400, 99999999);
   fill(255);
 
   /* Draw all boards */
