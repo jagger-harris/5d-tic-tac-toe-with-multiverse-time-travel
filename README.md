@@ -18,7 +18,7 @@ Requires git for testing.
 git clone https://github.com/jagger-harris/5d-tic-tac-toe-with-multiverse-time-travel.git
 ```
 
-In order to run this, you must either put it on a server environment or use Live Server.
+Open `index.html` to view.
 
 ## Contributing
 - Pull requests should always be reviewed by at least one other member prior to being merged
