@@ -64,17 +64,15 @@ class Board {
             let turnAmount = this.turnAmount;
             let level = this.level + 1;
 
-            game.turn = turn;
-
             /* Time travel logic */
             if (level != this.turnAmount) {
               game.timelines += 1;
               y = -((this.size * 3) + 200) * (game.timelines - 1);
               turnAmount -= 1;
             }
-        
-            game.present = level;
 
+            game.turn = turn;
+            game.present = level;
             game.boards.push(new Board(x, y, size, turn, turnAmount, level, this.buttons));
 
             if (level != this.turnAmount) {

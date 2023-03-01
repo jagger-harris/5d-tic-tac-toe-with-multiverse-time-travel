@@ -22,6 +22,10 @@ class Game {
 
 let game = new Game("X");
 
+function preload() {
+  loadFont("assets/Nunito-Regular.ttf");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(60);
@@ -55,6 +59,7 @@ function setup() {
 
 function draw() {
   background(0);
+  textFont("Nunito-Regular");
 
   /* Mouse transformations */
   translate(offset.x, offset.y);
