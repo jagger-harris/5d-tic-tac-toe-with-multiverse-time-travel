@@ -7,6 +7,14 @@ let offset;
 /**
  * Game logic
  */
+class TimelineArrow {
+  constructor(rect1, rect2, triangle) {
+    this.rect1 = rect1;
+    this.rect2 = rect2;
+    this.triangle = triangle;
+  }
+}
+
 class Game {
   constructor(turn) {
     this.size = 200;
@@ -77,6 +85,16 @@ function draw() {
   rect(game.boards[game.boards.length - 1].x + 100, -999999, 400, 99999999);
   fill(255);
 
+  /* Draw timeline arrows */
+  for (let i = 0; i < game.timelineArrows.length; i++) {
+    let arrow = game.timelineArrows[i];
+    
+    fill(255);
+    rect(arrow.rect1[0], arrow.rect1[1], arrow.rect1[2], arrow.rect1[3]);
+    rect(arrow.rect2[0], arrow.rect2[1], arrow.rect2[2], arrow.rect2[3]);
+    triangle(arrow.triangle[0], arrow.triangle[1], arrow.triangle[2], arrow.triangle[3], arrow.triangle[4], arrow.triangle[5]);
+  }
+
   /* Draw all boards */
   for (let i = 0; i < game.boards.length; i++) {
     game.boards[i].draw(game);
@@ -99,10 +117,14 @@ function drawGui() {
   resetMatrix();
 
   if (game.won) {
-    stroke(0);
-    strokeWeight(50);
+    stroke(255);
+    strokeWeight(5);
     textSize(100);
     textAlign(CENTER, CENTER);
+
+    fill(0);
+    rect(-50, height * 0.5 - 60, width + 100, 120);
+    noStroke();
 
     if (game.winningPlayer == "DRAW") {
       fill(255, 255, 255);

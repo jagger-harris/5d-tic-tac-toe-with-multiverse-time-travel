@@ -26,6 +26,13 @@ class Board {
   }
 
   draw(game) {
+    /* Arrow */
+    if (this.hasNextBoard) {
+      fill(255);
+      rect(this.x + 600, this.y + 250, 120, 100);
+      triangle(this.x + 700, this.y + 200, this.x + 700, this.y + 400, this.x + 780, this.y + 300);
+    }
+
     /* Border */
     if (this.turn == "X") {
       stroke(255, 100, 100);
@@ -45,68 +52,72 @@ class Board {
     line(this.x, this.y + this.size * 2, this.x + this.size * 3, this.y + this.size * 2);
     
     for (let i = 0; i < this.buttons.length; i++) {
-      this.buttons[i].draw(offset, zoom, () => {
-        /* Only play on empty spaces */
-        if (this.buttons[i].label != "") {
-          return;
-        }
+      this.buttons[i].draw(offset, zoom, () => this.buttonPress(i, game));
+    }
+  }
 
-        /* Only play if no one has won */
-        if (game.won) {
-          return;
-        }
+  buttonPress(button, game) {
+    /* Only play on empty spaces */
+    if (this.buttons[button].label != "") {
+      return;
+    }
 
-        /* Only play on board with matching turn */
-        if (this.turn != game.turn) {
-          return;
-        }
+    /* Only play if no one has won */
+    if (game.won) {
+      return;
+    }
 
-        /* Only play on boards present and past, not future */
-        if (this.level > game.present) {
-          return;
-        }
+    /* Only play on board with matching turn */
+    if (this.turn != game.turn) {
+      return;
+    }
 
-        /* Only play on board with no future */
-        if (this.hasNextBoard && this.level == game.present) {
-          return;
-        }
-        
-        this.buttons[i].label = this.turn;
-        this.turnAmount += 1;
-        this.won = this.checkWin();
+    /* Only play on boards present and past, not future */
+    if (this.level > game.present) {
+      return;
+    }
 
-        if (this.won) {
-          if (this.turnAmount > 8) {
-            this.winningPlayer = "DRAW";
-          } else {
-            this.winningPlayer = this.turn;
-          }
-        } else {
-          let x = this.x + (this.size * 3) + 200;
-          let y = this.y;
-          let size = this.size;
-          let turn = this.turn == "X" ? "O" : "X";
-          let turnAmount = this.turnAmount;
-          let level = this.level + 1;
+    /* Only play on board with no future */
+    if (this.hasNextBoard && this.level == game.present) {
+      return;
+    }
+    
+    this.buttons[button].label = this.turn;
+    this.turnAmount += 1;
+    this.hasNextBoard = true;
+    this.won = this.checkWin();
 
-          /* Time travel logic */
-          if (level != this.turnAmount) {
-            game.timelines += 1;
-            y = -((this.size * 3) + 200) * (game.timelines - 1);
-            turnAmount -= 1;
-          }
+    if (this.won) {
+      if (this.turnAmount > 8) {
+        this.winningPlayer = "DRAW";
+      } else {
+        this.winningPlayer = this.turn;
+      }
+    }
 
-          this.hasNextBoard = true;
-          game.turn = turn;
-          game.present = level;
-          game.boards.push(new Board(x, y, size, turn, turnAmount, level, this.buttons));
+    let x = this.x + (this.size * 3) + 200;
+    let y = this.y;
+    let size = this.size;
+    let turn = this.turn == "X" ? "O" : "X";
+    let turnAmount = this.turnAmount;
+    let level = this.level + 1;
 
-          if (level != this.turnAmount) {
-            this.buttons[i].label = "";
-            this.turnAmount -= 1;
-          }
-        }
-      })
+    /* Time travel logic */
+    if (level != this.turnAmount) {
+      game.timelines += 1;
+      y = -((this.size * 3) + 200) * (game.timelines - 1);
+      turnAmount -= 1;
+      console.log(this.timeline);
+      game.timelineArrows.push(new TimelineArrow([this.x + 250, y + 250, 100, 550 * (game.timelines - 1)], [this.x + 250, y + 250, 460, 100], [this.x + 700, y + 200, this.x + 700, y + 400, this.x + 780, y + 300]));
+    }
+
+    game.turn = turn;
+    game.present = level;
+    game.boards.push(new Board(x, y, size, turn, turnAmount, level, this.buttons));
+
+    if (level != this.turnAmount) {
+      this.buttons[button].label = "";
+      this.turnAmount -= 1;
     }
   }
 
