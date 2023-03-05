@@ -7,28 +7,11 @@ let offset;
 /**
  * Game logic
  */
-class TimelineArrow {
-  constructor(rect1, rect2, triangle) {
-    this.rect1 = rect1;
-    this.rect2 = rect2;
-    this.triangle = triangle;
-  }
-}
-
-class Game {
-  constructor(turn) {
-    this.size = 200;
-    this.boards = [];
-    this.timelineArrows = [];
-    this.winningPlayer = "";
-    this.won = false;
-    this.turn = turn;
-    this.timelines = 1;
-    this.present = 0;
-  }
-}
-
 let game = new Game("X");
+
+/* Global board variables to save memory */
+const boardSize = 600;
+const boardMargin = 200;
 
 function preload() {
   loadFont("assets/Nunito-Regular.ttf");
@@ -39,10 +22,11 @@ function setup() {
   frameRate(60);
 
   /* Create board */
-  game.boards.push(new Board(width * 0.5 - game.size * 1.5, 0, game.size, "X", 0, 0));
+  game.boards.push(new Board(50, 50, 0, 0, "X", 0));
 
   /* Mouse transformations setup */
-  offset = createVector(0, game.size - 50);
+  offset = createVector(width * 0.5 - (boardSize * 0.6), height * 0.5 - (boardSize * 0.6));
+
   window.addEventListener("wheel", event => {
     const minZoom = 0.35;
     const maxZoom = 1;
@@ -60,7 +44,7 @@ function setup() {
       zoom = maxZoom;
       return;
     }
-    
+
     offset.sub(mouse).mult(zoomCalc).add(mouse);
   });
 }
@@ -86,24 +70,12 @@ function draw() {
   fill(255);
 
   /* Draw timeline arrows */
-  for (let i = 0; i < game.timelineArrows.length; i++) {
-    let arrow = game.timelineArrows[i];
-    
-    fill(255);
-    rect(arrow.rect1[0], arrow.rect1[1], arrow.rect1[2], arrow.rect1[3]);
-    rect(arrow.rect2[0], arrow.rect2[1], arrow.rect2[2], arrow.rect2[3]);
-    triangle(arrow.triangle[0], arrow.triangle[1], arrow.triangle[2], arrow.triangle[3], arrow.triangle[4], arrow.triangle[5]);
-  }
+  game.timelineArrows.forEach(arrow => arrow.draw());
 
   /* Draw all boards */
-  for (let i = 0; i < game.boards.length; i++) {
-    game.boards[i].draw(game);
-
-    if (game.boards[i].won) {
-      game.won = true;
-      game.winningPlayer = game.boards[i].winningPlayer;
-    }
-  }
+  game.boards.forEach(board => {
+    board.draw();
+  });
 
   drawGui();
 }
@@ -116,27 +88,23 @@ function drawGui() {
   /* Reset matrices for GUI */
   resetMatrix();
 
-  if (game.won) {
-    stroke(255);
-    strokeWeight(5);
-    textSize(100);
-    textAlign(CENTER, CENTER);
+  strokeWeight(10);
 
-    fill(0);
-    rect(-50, height * 0.5 - 60, width + 100, 120);
-    noStroke();
-
+  if (game.winningPlayer != "") {
     if (game.winningPlayer == "DRAW") {
       fill(255, 255, 255);
+      stroke(150, 150, 150);
       text("No one won the game!", width * 0.5, height * 0.5);
     } else {
       if (game.winningPlayer === "X") {
         fill(255, 100, 100);
+        stroke(255, 25, 25);
       } else {
         fill(100, 100, 255);
+        stroke(25, 25, 255);
       }
 
-      text(game.winningPlayer + " has won the game!", width * 0.5, height * 0.5);
+      text(game.winningPlayer + " won the game!", width * 0.5, height * 0.5);
     }
   }
 }

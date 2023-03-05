@@ -1,39 +1,28 @@
 class Button {
-  constructor(x, y, width, height, label) {
+  constructor(x, y, width, height, roundness, label, labelSize) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.roundness = roundness;
     this.label = label;
+    this.labelSize = labelSize;
   }
 
-  draw(offset, zoom, func) {
-    this.click(offset, zoom, func);
-
-    if (this.hover(offset, zoom)) {
-      fill(50);
-    } else {
-      fill(0);
-    }
-
-    let size = 150;
+  draw(func) {
+    this.click(func);
+    this.hover() ? fill(50) : fill(0);
 
     noStroke();
-    rect(this.x, this.y, this.width, this.height);
+    rect(this.x, this.y, this.width, this.height, this.roundness);
     fill(255);
     textAlign(CENTER, CENTER);
-    textSize(size);
-
-    if (this.label === "X") {
-      fill(255, 100, 100);
-    } else {
-      fill(100, 100, 255);
-    }
-
-    text(this.label, this.x + this.width * 0.5, this.y + (size / 8) + this.height * 0.5)
+    textSize(this.labelSize);
+    this.label == "X" ? fill(255, 100, 100) : fill(100, 100, 255);
+    text(this.label, this.x + this.width * 0.5, this.y + this.height * 0.55);
   }
 
-  hover(offset, zoom) {
+  hover() {
     let x = (mouseX - offset.x) / zoom;
     let y = (mouseY - offset.y) / zoom;
     
@@ -44,11 +33,9 @@ class Button {
     return false;
   }
 
-  click(offset, zoom, func) {
-    if (this.hover(offset, zoom)) {
-      if (mouseIsPressed) {
-        func();
-      }
+  click(func) {
+    if (this.hover(offset, zoom) && mouseIsPressed) {
+      func();
     }
   }
 }
