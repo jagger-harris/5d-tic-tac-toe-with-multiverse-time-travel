@@ -101,20 +101,28 @@ function drawGui() {
   strokeWeight(10);
 
   if (game.winningPlayer != "") {
+    noStroke();
+    
     if (game.winningPlayer == "DRAW") {
+      fill(150, 150, 150, 150);
+      rect(0, 0, width, height);
       fill(255, 255, 255);
       stroke(150, 150, 150);
-      text("No one won the game!", width * 0.5, height * 0.5);
+      text("No one won the game!", width * 0.5, height * 0.45);
     } else {
       if (game.winningPlayer === "X") {
-        fill(255, 100, 100);
-        stroke(255, 25, 25);
+        fill(255, 100, 100, 150);
+        rect(0, 0, width, height);
+        fill(255, 50, 50);
+        stroke(230, 0, 0);
       } else {
-        fill(100, 100, 255);
-        stroke(25, 25, 255);
+        fill(100, 100, 255, 150);
+        rect(0, 0, width, height);
+        fill(50, 50, 255);
+        stroke(0, 0, 200);
       }
 
-      text(game.winningPlayer + " won the game!", width * 0.5, height * 0.5);
+      text(game.winningPlayer + " won the game!", width * 0.5, height * 0.45);
     }
   }
 }
