@@ -8,6 +8,7 @@ let offset;
  * Game logic
  */
 let game = new Game("X");
+let font;
 let soundTimeTravel;
 let soundWin;
 let soundX;
@@ -18,7 +19,7 @@ const boardSize = 600;
 const boardMargin = 200;
 
 function preload() {
-  loadFont("assets/Nunito-Regular.ttf");
+  font = loadFont("assets/Nunito-Regular.ttf");
 
   soundTimeTravel = loadSound("assets/timetravel.mp3");
   soundWin = loadSound("assets/win.mp3");
@@ -60,7 +61,7 @@ function setup() {
 
 function draw() {
   background(0);
-  textFont("Nunito-Regular");
+  textFont(font);
 
   /* Mouse transformations */
   translate(offset.x, offset.y);

@@ -19,7 +19,7 @@ class Button {
     textAlign(CENTER, CENTER);
     textSize(this.labelSize);
     this.label == "X" ? fill(255, 100, 100) : fill(100, 100, 255);
-    text(this.label, this.x + this.width * 0.5, this.y + this.height * 0.55);
+    text(this.label, this.x + this.width * 0.5, this.y + this.height * 0.4);
   }
 
   hover() {
