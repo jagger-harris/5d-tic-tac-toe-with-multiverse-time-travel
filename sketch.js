@@ -8,6 +8,10 @@ let offset;
  * Game logic
  */
 let game = new Game("X");
+let soundTimeTravel;
+let soundWin;
+let soundX;
+let soundO;
 
 /* Global board variables to save memory */
 const boardSize = 600;
@@ -15,6 +19,11 @@ const boardMargin = 200;
 
 function preload() {
   loadFont("assets/Nunito-Regular.ttf");
+
+  soundTimeTravel = loadSound("assets/timetravel.mp3");
+  soundWin = loadSound("assets/win.mp3");
+  soundX = loadSound("assets/x-click.mp3");
+  soundO = loadSound("assets/o-click.mp3");
 }
 
 function setup() {

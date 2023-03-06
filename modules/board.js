@@ -66,10 +66,14 @@ class Board {
     this.turnAmount += 1;
     this.nextBoard = true;
     
+    /* Play sounds */
+    this.turn == "X" ? soundX.play() : soundO.play();
+
     /* Check if player won */
     let won = this.checkWin();
 
     if (won) {
+      soundWin.play();
       this.turnAmount > 8 ? game.winningPlayer = "DRAW" : game.winningPlayer = this.turn;
     }
 
@@ -83,6 +87,8 @@ class Board {
     
     /* Time travel logic */
     if (level != this.turnAmount) {
+      soundTimeTravel.play();
+
       game.timelines += 1;
       timeline += 1;
       y = this.y - (boardSize + boardMargin) * (game.timelines - this.timeline);
