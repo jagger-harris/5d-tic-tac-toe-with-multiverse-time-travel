@@ -2,6 +2,8 @@
 
 A varient of 5D chess. Play Tic-Tac-Toe in a way no one has imagined. Explore time travel with your friends with this mind-bending game.
 
+You can play the game [here](https://jagger-harris.github.io/5d-tic-tac-toe-with-multiverse-time-travel/).
+
 This uses the p5.js library for graphics.
 
 Requires git for testing.
