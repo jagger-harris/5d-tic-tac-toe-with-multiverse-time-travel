@@ -14,8 +14,18 @@ class Arrow {
       line(this.x, this.y, this.x, this.y - this.length);
     } else {
       line(this.x, this.y, this.x + this.length, this.y);
-      line(this.x + (this.length - 60), this.y + 50, this.x + this.length, this.y);
-      line(this.x + (this.length - 60), this.y - 50, this.x + this.length, this.y);
+      line(
+        this.x + (this.length - 60),
+        this.y + 50,
+        this.x + this.length,
+        this.y
+      );
+      line(
+        this.x + (this.length - 60),
+        this.y - 50,
+        this.x + this.length,
+        this.y
+      );
     }
   }
 }

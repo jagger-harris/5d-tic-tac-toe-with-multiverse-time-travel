@@ -25,8 +25,13 @@ class Button {
   hover() {
     let x = (mouseX - offset.x) / zoom;
     let y = (mouseY - offset.y) / zoom;
-    
-    if (x > this.x && y > this.y && x < this.width + this.x && y < this.height + this.y) {
+
+    if (
+      x > this.x &&
+      y > this.y &&
+      x < this.width + this.x &&
+      y < this.height + this.y
+    ) {
       return true;
     }
 

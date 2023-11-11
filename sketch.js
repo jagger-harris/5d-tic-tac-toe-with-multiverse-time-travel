@@ -35,12 +35,15 @@ function setup() {
   game.boards.push(new Board(50, 50, 0, 0, "X", 0));
 
   /* Mouse transformations setup */
-  offset = createVector(width * 0.5 - (boardSize * 0.6), height * 0.5 - (boardSize * 0.6));
+  offset = createVector(
+    width * 0.5 - boardSize * 0.6,
+    height * 0.5 - boardSize * 0.6
+  );
 
-  window.addEventListener("wheel", event => {
+  window.addEventListener("wheel", (event) => {
     const minZoom = 0.35;
     const maxZoom = 1;
-    const zoomCalc = 1 - (event.deltaY / 1000);
+    const zoomCalc = 1 - event.deltaY / 1000;
     const mouse = createVector(mouseX, mouseY);
 
     zoom *= zoomCalc;
@@ -80,10 +83,10 @@ function draw() {
   fill(255);
 
   /* Draw timeline arrows */
-  game.timelineArrows.forEach(arrow => arrow.draw());
+  game.timelineArrows.forEach((arrow) => arrow.draw());
 
   /* Draw all boards */
-  game.boards.forEach(board => {
+  game.boards.forEach((board) => {
     board.draw();
   });
 
@@ -102,7 +105,7 @@ function drawGui() {
 
   if (game.winningPlayer != "") {
     noStroke();
-    
+
     if (game.winningPlayer == "DRAW") {
       fill(150, 150, 150, 150);
       rect(0, 0, width, height);
